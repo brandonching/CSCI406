@@ -1,0 +1,119 @@
+\documentclass[12pt]{exam}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{float}  % Figure placement
+\usepackage{minted}  % Code highlighting
+\usepackage{tikz}  % Flow chart
+\usepackage{lipsum}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{MnSymbol}
+
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+\newcommand{\hwheaderfooter}[3]{
+\pagestyle{headandfoot}
+\firstpageheadrule
+\firstpageheader{#1}{#2}{#3}
+\runningheader{#1}{#2}{#3}
+\runningheadrule
+\firstpagefooter{}{\thepage}{}
+\runningfooter{}{\thepage}{}
+}
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\hwheaderfooter{Example Homework}{CHING}{CSCI 406}
+
+
+\begin{document}
+\begin{center}
+  \fbox{\fbox{\parbox{\textwidth - 0.2 in}{\centering
+
+        {Instructions: Please note that handwritten assignments \textbf{will not be graded}. Use the
+          provided \latex template to complete your homework. Please do not alter the order or spacing of
+          questions (keep each question on its own page). When you submit to Gradescope, you must mark
+          which page(s) correspond to each question. \textbf{You may not receive credit for unmarked
+            questions}. \\ When including graphical figures, we encourage the use of tools such as \href{https://dreampuf.github.io/GraphvizOnline/}{graphviz} or packages like \href{https://www.overleaf.com/learn/latex/TikZ_package}{tikz} for simple and complex figures. However, these may be handwritten only if they are neat and legible (as defined by the grader). }\\
+
+      }}}
+\end{center}
+
+\begin{center}
+  \fbox{\fbox{\parbox{\textwidth - 0.2 in}{
+        \begin{center}
+          \textbf{Important Homework Information}
+        \end{center}
+
+        \begin{itemize}
+          \setlength\itemsep{0em}
+          \item Each homework assignment is worth 100 points.
+          \item All homeworks are weighted evenly.
+          \item Each homework will have some easier questions from the current week's content,
+                and some harder questions from the previous week's content.
+          \item It is recommended that you work on the questions from the previous week's content
+                throughout the week. The questions related to the current week's content should be
+                completed throughout the week.
+          \item The point value of each question is listed next to the question.
+          \item In brackets after the point amount are two values: the week number the question
+                is related to, and a difficulty score in 1-5 $\filledstar$s. These are meant to help
+                you determine which problems will likely take more time. The scores are relative to
+                the questions in that particular homework.
+          \item Include one question per page. (It's ok to keep parts on the same page.)
+        \end{itemize}
+
+      }}}
+\end{center}
+
+\begin{questions}
+
+\question For the following questions, select whether the statement is true or false,
+and write a \textit{brief} explanation of your reasoning.
+
+\begin{parts}
+  \part[10] [W0, $\filledstar$] There will be a homework assignment most weeks.
+
+  % Replace \square with \blacksquare for the option you would like to select.
+  $\blacksquare$ True $\square$ False
+
+  \part[10] [W0, $\filledstar$] All homework assignments are due on Saturday night.
+
+  % Replace \square with \blacksquare for the option you would like to select.
+  $\blacksquare$ True $\square$ False
+
+  \part[10] [W3, $\filledstar\filledstar\filledstar\filledstar\filledstar$]
+  This problem is marked as a problem about content from Week 3 with minimal difficulty.
+
+  % Replace \square with \blacksquare for the option you would like to select.
+  $\square$ True $\blacksquare$ False
+
+\end{parts}
+
+\clearpage
+
+\question[70] [W0, $\filledstar\filledstar\filledstar$]
+Design a dictionary data structure in which search, insertion,
+and deletion can all be processed in $\mathcal{O}(1)$ time in the worst
+case. You may assume the set elements are integers drawn from a finite set
+$1, 2, \dots , n$, and initialization can take $\mathcal{O}(n)$ time.
+
+% Numbered list
+\begin{enumerate}
+  \item Allocate an array of length $n$.
+  \item Search for key $i$ can be performed by looking if an element exist at index $i$.
+  \item Insert and remopve at key $i$ is place/remove element at index $i$.
+  \item Insert, remove, and index are all $\mathcal{O}(1)$. so all operations are constant time.
+\end{enumerate}
+
+% close the document
+\end{questions}
+\end{document}
