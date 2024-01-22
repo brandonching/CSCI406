@@ -1,0 +1,130 @@
+\documentclass[12pt]{exam}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{float}  % Figure placement
+\usepackage{minted}  % Code highlighting
+\usepackage{tikz}  % Flow chart
+\usepackage{lipsum}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{MnSymbol}
+\usepackage{pgffor}
+
+
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+\newcommand{\hwheaderfooter}[3]{
+\pagestyle{headandfoot}
+\firstpageheadrule
+\firstpageheader{#1}{#2}{#3}
+\runningheader{#1}{#2}{#3}
+\runningheadrule
+\firstpagefooter{}{\thepage}{}
+\runningfooter{}{\thepage}{}
+}
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+\newcommand{\stars}[1]{%
+    \foreach \n in {1,...,#1}{%
+        $\filledstar$%
+    }%
+}
+
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\hwheaderfooter{HW 2}{Ching}{CSCI 406}
+
+
+\begin{document}
+\begin{center}
+    \fbox{\fbox{\parbox{\textwidth - 0.2 in}{\centering
+
+                {Instructions: Please note that handwritten assignments \textbf{will not be graded}. Use the
+                    provided \latex template to complete your homework. Please do not alter the order or spacing of
+                    questions (keep each question on its own page). When you submit to Gradescope, you must mark
+                    which page(s) correspond to each question. \textbf{You may not receive credit for unmarked
+                        questions}. \\ When including graphical figures, we encourage the use of tools such as \href{https://dreampuf.github.io/GraphvizOnline/}{graphviz} or packages like \href{https://www.overleaf.com/learn/latex/TikZ_package}{tikz} for simple and complex figures. However, these may be handwritten only if they are neat and legible (as defined by the grader). }\\
+
+            }}}
+\end{center}
+
+\textbf{List any collaborators (besides TAs or professors) here:}
+
+\begin{questions}
+
+    \question[35] [Maze, \stars{5}] Describe the graph model for Spacewreck. How will you encode the complexities and rules of the game into a graph? You must be able to run an \textbf{unmodified} BFS to find the shortest sequence of moves for either Captain Rocket or Lieutenant Lucky to reach the Goal. In order for BFS to work, your model must have exactly one start vertex and exactly one finish vertex.
+
+    \clearpage
+
+    \question[5] [W3, \stars{1}] For the following questions, select whether the statement is true or false,
+    and write a \textit{brief} explanation of your reasoning.
+
+    \begin{parts}
+        \part Topological Sort results in a unique ordering
+
+        % Replace \square with \blacksquare for the option you would like to select.
+        $\square$ True $\square$ False
+
+        \part It is impossible to find a topological ordering on a cyclic graph.
+
+        % Replace \square with \blacksquare for the option you would like to select.
+        $\square$ True $\square$ False
+
+    \end{parts}
+
+    \clearpage
+
+    \question[20] [W2/3, \stars{2}]
+    In BFS and DFS, an undiscovered node is marked \textit{discovered} when it
+    is first encountered, and marked processed when it has been completely searched.
+    At any given moment, several nodes might be simultaneously in the
+    \textit{discovered} state.
+
+    \begin{parts}
+        \part[7] Describe a graph with $n$ vertices such that $n - 1$ vertices are simultaneously in the discovered state at some point during a \textbf{BFS} from a starting vertex $v$ of your choosing.
+
+        \part[3] Draw a graph with $n=6$ vertices that matches the description in part (a). Clearly indicate which vertex is the starting vertex.
+
+        \part[7] Describe a graph with $n$ vertices such that $n - 1$ vertices are simultaneously in the discovered state at some point during a \textbf{DFS} from a starting vertex $v$ of your choosing.
+
+        \part[3] Draw a graph with $n=6$ vertices that matches the description in part (b). Clearly indicate which vertex is the starting vertex.
+
+    \end{parts}
+
+    \clearpage
+
+    \question[10] [W2/3, \stars{2}] Your friend Alice has recently returned from a trip to a wonderful land. While describing her adventures, she tells you about a curious hedge maze she encountered. ``The maze went on and on forever,'' she tells you. ``I don't think it had an end!'' Fortunately, a friendly cat directed her to the exit.
+
+    This strange tale has you thinking about infinite mazes. \textbf{Which of the following statements are true about searching infinite mazes (graphs) where all nodes have \textit{finite} degree?}
+
+    Assume the following about the infinite maze:
+    \begin{itemize}
+        \item the maze has a single connected component and that we are starting from a start location and searching for an end location that exists somewhere \textbf{in} the maze,
+        \item there is a finite distance between the start and end locations, and
+        \item we stop the traversal once the end location is reached.
+    \end{itemize}
+
+    $\square$ A DFS may never terminate. \\
+    $\square$ A BFS may never terminate. \\
+    $\square$ A DFS might terminate, but the solution may not be the shortest path. \\
+    $\square$ A BFS might terminate, but the solution may not be the shortest path. \\
+    $\square$ A DFS will terminate, and the solution will be the shortest path. \\
+    $\square$ A BFS will terminate, and the solution will be the shortest path. \\
+
+    \clearpage
+
+    \question[30] [W2/3, \stars{4}] A primary application of BFS is finding shortest paths in an unweighted graph. Consider a weighted graph with edges of cost 0 and 1. Describe how to modify the BFS algorithm to find the shortest path between two vertices in this type of graph. The worst case complexity must remain the same ($\mathcal{O}(V + E)$).
+
+    % close the document
+\end{questions}
+\end{document}
