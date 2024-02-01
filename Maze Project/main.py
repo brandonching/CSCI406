@@ -134,22 +134,41 @@ class GameState:
     def move_name(self):
         return self.move_name
 
+    def __eq__(self, other):
+        return self.captain == other.captain and self.lieutenant == other.lieutenant
+
 
 # Create a new game state
 game = GameState(game_board, captain_start, lieutenant_start, "Start")
 
-# draw the graph
-plt.show()
+
 # Conduct a BFS search to find the shortest path to the goal do not revisit nodes
 def bfs_search(game_state):
-
+    queue = []
+    visited = []
+    queue.append([game_state])
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+        if node.is_goal():
+            return path
+        if node not in visited:
+            for next_node in node.get_possible_moves():
+                new_path = list(path)
+                new_path.append(next_node)
+                queue.append(new_path)
+            visited.append(node)
+    return None
 
 
 # print the moves in the shortest path on a single line, skip the first move
 shortest_path = bfs_search(game)
-print(shortest_path)
 output = ""
-for i in range(1, len(bfs_search(game))):
-    output += shortest_path[i].move_name
+# if there is no path, print "NO PATH"
+if shortest_path is None:
+    output = "NO PATH"
+else:
+    for i in range(1, len(shortest_path)):
+        output += shortest_path[i].move_name
 
 print(output)
