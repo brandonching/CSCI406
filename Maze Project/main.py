@@ -11,11 +11,17 @@
 import networkx as nx
 import sys
 
+############################################
+# Load the input file
+############################################
+
 # if argument provided, get the input file from the argument
 if len(sys.argv) > 1:
     input_file = sys.argv[1]
 else:
-    input_file = "input.txt"
+    # output error message and exit if no input file is provided
+    print("No input file provided")
+    sys.exit()
 
 # read the input file
 with open(input_file, 'r') as f:
@@ -23,6 +29,10 @@ with open(input_file, 'r') as f:
 
 # close the file
 f.close()
+
+############################################
+# Get basic information from the input file
+############################################
 
 # Get the rooms and corridors from the first line
 rooms = int(lines[0].split()[0])
@@ -37,7 +47,11 @@ room_colors.append("goal")
 captain_start = int(lines[2].split()[0])
 lieutenant_start = int(lines[2].split()[1])
 
-# Create a graph
+############################################
+# read the input file and create a graph of the game states
+############################################
+
+# Create a graph of the game states
 game_states = nx.DiGraph()
 
 # create a node for every possible game state (each game state is a tuple of 2 rooms corresponding to the captain and lieutenant's positions)
@@ -48,15 +62,16 @@ for i in range(rooms-1, 0, -1):
 # create a single node for the goal state
 game_states.add_node((rooms, rooms))
 
-# read in the rest of the input file, where each line represents a corridor between two rooms and the color of the corridor
+# read in the rest of the input file, where each line represents (origin room, destination room, color of the corridor)
 for i in range(corridors):
     corridor = lines[i+3].split()
     origin = int(corridor[0])
     destination = int(corridor[1])
     color = corridor[2]
 
-    # for each game state, if the lieutenant is in the origin room and the captain is in a room with the same color as the corridor, add an edge to the game state where the lieutenant is in the destination room and the captain is in the same room as before
+    # for each game state, check if either player is in the origin room and the other player is in a room with the same color as the corridor. If so, add an edge to the game state where the player in the origin room is in the destination room and the other player is in the same room as before
     for j in range(rooms, 0, -1):
+        # Check if the lieutenant is in the origin room and the captain is in a room with the same color as the corridor
         if (j, origin) in game_states.nodes and color == room_colors[j-1]:
             # if destination is the goal room, add an edge to the goal state
             if destination == rooms:
@@ -66,8 +81,7 @@ for i in range(corridors):
                 game_states.add_edge(
                     (j, origin), (j, destination), name="L" + str(destination))
 
-    # for each game state, if the captain is in the origin room and the lieutenant is in a room with the same color as the corridor, add an edge to the game state where the captain is in the destination room and the lieutenant is in the same room as before
-    for j in range(rooms, 0, -1):
+        # Check if the captain is in the origin room and the lieutenant is in a room with the same color as the corridor
         if (origin, j) in game_states.nodes and color == room_colors[j-1]:
             # if destination is the goal room, add an edge to the goal state
             if destination == rooms:
@@ -77,6 +91,10 @@ for i in range(corridors):
                 game_states.add_edge(
                     (origin, j), (destination, j), name="R" + str(destination))
 
+############################################
+# Process the graph to find the shortest path
+############################################
+
 # check if there are any paths from the starting game state to the goal state
 if not nx.has_path(game_states, (captain_start, lieutenant_start), (rooms, rooms)):
     print("NO PATH")
@@ -84,7 +102,7 @@ if not nx.has_path(game_states, (captain_start, lieutenant_start), (rooms, rooms
 
 # find all shortest paths from the starting game state to the goal state
 paths = nx.all_shortest_paths(
-    game_states, (captain_start, lieutenant_start), (rooms, rooms))
+    game_states, (captain_start, lieutenant_start), (rooms, rooms), method="dijkstra")
 
 # convert the paths to strings
 output = []
@@ -94,6 +112,6 @@ for path in paths:
         path_output += game_states[path[i]][path[i+1]]['name']
     output.append(path_output)
 
-# sort all paths lexicographically and print the first one
+# sort all paths lexicographically and output the first one
 output.sort()
 print(output[0])
