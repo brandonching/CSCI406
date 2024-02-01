@@ -1,6 +1,6 @@
 # import graph library
 import networkx as nx
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import sys
 
 # if argument provided, get the input file from the argument
@@ -74,13 +74,13 @@ room_labels = nx.get_node_attributes(game_board, 'color')
 
 
 # draw the graph with labels
-pos = nx.spring_layout(game_board)
-nx.draw(game_board, pos, with_labels=True, verticalalignment='top', node_color=[game_board.nodes[i]['node_color'] for i in game_board.nodes],
-        node_size=1500, font_weight='bold')
-nx.draw_networkx_edge_labels(game_board, pos, edge_labels=edge_labels)
+# pos = nx.spring_layout(game_board)
+# nx.draw(game_board, pos, with_labels=True, verticalalignment='top', node_color=[game_board.nodes[i]['node_color'] for i in game_board.nodes],
+#        node_size=1500, font_weight='bold')
+# nx.draw_networkx_edge_labels(game_board, pos, edge_labels=edge_labels)
 # add room labels under the number
-nx.draw_networkx_labels(game_board, pos, labels=room_labels, font_size=8,
-                        font_color='black', font_weight='bold', verticalalignment='bottom')
+# nx.draw_networkx_labels(game_board, pos, labels=room_labels, font_size=8,
+#                         font_color='black', font_weight='bold', verticalalignment='bottom')
 
 
 # Create a Game State class
@@ -141,8 +141,11 @@ class GameState:
 # Create a new game state
 game = GameState(game_board, captain_start, lieutenant_start, "Start")
 
-
+# plot
+# plt.show()
 # Conduct a BFS search to find the shortest path to the goal do not revisit nodes
+
+
 def bfs_search(game_state):
     queue = []
     visited = []
@@ -160,15 +163,47 @@ def bfs_search(game_state):
             visited.append(node)
     return None
 
+# Conduct a BFS search to find all paths to the goal do not revisit nodes and store the paths in a list
 
-# print the moves in the shortest path on a single line, skip the first move
-shortest_path = bfs_search(game)
-output = ""
-# if there is no path, print "NO PATH"
-if shortest_path is None:
-    output = "NO PATH"
-else:
-    for i in range(1, len(shortest_path)):
-        output += shortest_path[i].move_name
 
-print(output)
+def bfs_search_all(game_state):
+    queue = []
+    visited = []
+    queue.append([game_state])
+    paths = []
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+        if node.is_goal():
+            paths.append(path)
+        if node not in visited:
+            for next_node in node.get_possible_moves():
+                new_path = list(path)
+                new_path.append(next_node)
+                queue.append(new_path)
+            visited.append(node)
+    return paths
+
+
+# create a map of the shortest paths, where the key is the length of the path and the value is is list of paths
+shortest_paths = {}
+if bfs_search(game) is None:
+    shortest_paths[0] = ["NO PATH"]
+for i in bfs_search_all(game):
+    path = ""
+    for j in range(1, len(i)):
+        path += i[j].move_name
+    if len(i) in shortest_paths:
+        shortest_paths[len(i)].append(path)
+    else:
+        shortest_paths[len(i)] = [path]
+
+# Get the list of the shortest paths from the map
+shortest_paths = shortest_paths[min(shortest_paths.keys())]
+
+# lexographically sort the paths and return the first one
+shortest_paths.sort()
+shortest_paths = shortest_paths[0]
+
+# print the paths
+print(shortest_paths)
