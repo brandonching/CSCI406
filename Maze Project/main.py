@@ -8,7 +8,7 @@
 # Author:  Brandon Ching
 ############################################
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import networkx as nx
 import sys
 
@@ -106,7 +106,6 @@ if not nx.has_path(game_states, (captain_start, lieutenant_start), (rooms, rooms
 paths = nx.all_shortest_paths(
     game_states, (captain_start, lieutenant_start), (rooms, rooms), method="dijkstra")
 
-
 # convert the paths to strings
 output = []
 for path in paths:
@@ -125,11 +124,78 @@ print(output[0])
 ############################################
 
 # # create a plot of the graph
+
+
 def plot():
-    pos = nx.spring_layout(game_states)
-    nx.draw(game_states, pos, with_labels=True,
-            node_size=1000, node_color="lightblue")
-    edge_labels = nx.get_edge_attributes(game_states, 'key')
+    # get the nodes of the shortest path
+    shortest_path_nodes = nx.shortest_path(
+        game_states, (captain_start, lieutenant_start), (rooms, rooms))
+    color_map = []
+    for node in game_states:
+        if node == (captain_start, lieutenant_start):
+            color_map.append('green')
+        elif node == (rooms, rooms):
+            color_map.append('red')
+        elif node in shortest_path_nodes:
+            color_map.append('orange')
+        else:
+            color_map.append('lightblue')
+
+    # for each node, calculate the shortest number of steps to get from the start node to that node
+    shortest_path = nx.single_source_shortest_path_length(
+        game_states, (captain_start, lieutenant_start))
+
+    # create a map of the distance from the start node to each node where the key is the distance and the value is a list of nodes with that distance
+    node_distance = {}
+    for node in shortest_path:
+        if shortest_path[node] in node_distance:
+            node_distance[shortest_path[node]].append(node)
+        else:
+            node_distance[shortest_path[node]] = [node]
+
+    # if node is not in the map, add it to the map with a distance of -1
+    for node in game_states:
+        if node not in shortest_path:
+            if -1 in node_distance:
+                node_distance[-1].append(node)
+            else:
+                node_distance[-1] = [node]
+
+    pos = {}
+    # position the start node
+    pos[(captain_start, lieutenant_start)] = (0, 0)
+    # for each key in the node_distance map, position the nodes with that distance from the start node
+    for key in node_distance:
+        if key == 0:
+            continue
+        for i in range(len(node_distance[key])):
+            pos[node_distance[key][i]] = (
+                key, (i - len(node_distance[key])/2) * 2)
+
+    # make the edges connecting the nodes in the shortest path orange and thicker also make the font color of the edge labels orange and the rest of the edge labels black
+    edge_color = []
+    edge_width = []
+    shortest_edge_labels = {}
+    other_edge_labels = {}
+    for edge in game_states.edges:
+        if edge[0] in shortest_path_nodes and edge[1] in shortest_path_nodes:
+            edge_color.append('orange')
+            edge_width.append(5)
+            shortest_edge_labels[edge] = game_states[edge[0]][edge[1]]["key"]
+        else:
+            edge_color.append('black')
+            edge_width.append(1)
+            other_edge_labels[edge] = game_states[edge[0]][edge[1]]["key"]
+
+    # draw the graph
+    nx.draw(game_states, pos, node_color=color_map, with_labels=True, node_size=1000,
+            labels={node: node for node in game_states.nodes()}, edge_color=edge_color, width=edge_width)
+    nx.draw_networkx_edge_labels(
+        game_states, pos, edge_labels=other_edge_labels, font_color="black")
+    nx.draw_networkx_edge_labels(
+        game_states, pos, edge_labels=shortest_edge_labels, font_color="orange")
+
     plt.show()
+
 
 # plot()
