@@ -67,14 +67,33 @@
     \begin{parts}
         \part[10] Prove that a directed-acyclic graph has at least one vertex with in-degree zero and one vertex with out-degree zero. (Hint: prove in-degree by contradiction, and then reference that proof for out-degree).
 
+        \textbf{Proof by contradiction:} Assume that a DAG has no vertex with in-degree zero. Then, there is no vertex that can be the first vertex in a topological ordering. This contradicts the definition of a topological ordering. Therefore, a DAG must have at least one vertex with in-degree zero.
+
+        For the out-degree, the proof is the same as above but with the roles of in-degree and out-degree reversed.
+
         \part[15] Based on your previous answer, describe an algorithm for topological sorting that uses in-degrees to process vertices. The complexity of your algorithm must be no worse than the DFS-based toposort algorithm discussed in class.
+
+        \begin{enumerate}
+            \item Create an array to store the in-degree of each vertex.
+            \item Enqueue all vertices with in-degree zero.
+            \item While the queue is not empty, do the following:
+                  \begin{itemize}
+                      \item Dequeue a vertex $v$ from the queue.
+                      \item Add $v$ to the topological ordering.
+                      \item For each neighbor $u$ of $v$, decrement the in-degree of $u$ by one.
+                      \item If the in-degree of $u$ is zero, enqueue $u$.
+                  \end{itemize}
+            \item If the topological ordering contains all vertices, return the topological ordering. Otherwise, return that the graph has a cycle.
+
+        \end{enumerate}
+
 
         \part[10] While running this algorithm, it reaches a point where there are still vertices left that have not been processed, yet none of these vertices have an in-degree of zero. What does this indicate about the graph?
 
-    \end{parts}
+        This indicates that the graph contains a cycle.
 
-    Keep it simple and discrite. multiple differencet algoithims tat might producse equal outputs
-    Khans algoithm that is pretty seimilar to the solution that they are looking for on part B
+
+    \end{parts}
 
     \clearpage
 
@@ -88,12 +107,16 @@
         If each edge of a graph has a unique weight, the MST of that graph will be unique.
 
         % Replace \square with \blacksquare for the option you would like to select.
-        $\square$ True $\square$ False
+        $\blacksquare$ True $\square$ False
         \hspace{0.5in} \textbf{No explanation necessary for part (a).}
 
         \part[4] Describe how you would modify Prim's algorithm to compute the \textbf{maximum} spanning tree. (That is, the tree with the highest cost.)
 
+        Simply change the edge selection criteria from the minimum to the maximum.
+
         \part[4] Describe how you would modify Kruskal's algorithm to compute the \textbf{maximum} spanning tree. (That is, the tree with the highest cost.)
+
+        Change the sorting order of the edges from ascending to descending.
 
     \end{parts}
     \clearpage
@@ -140,7 +163,7 @@
                 \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} &
                 \multicolumn{1}{c}{7}
                 \\ \hline
-                                      &                       &   &  &  &  & \\
+                0                     & 0                     & 5 & 5 & 0 & 0 & 0 \\
                 \hline
             \end{tabular}}}\\
 
@@ -152,7 +175,7 @@
             \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} &
             \multicolumn{1}{c}{7}
             \\ \hline
-                                  &                       &   &  &  &  & \\
+            0                     & 0                     & 5 & 5 & 0 & 0 & 5 \\
             \hline
         \end{tabular}}}\\
 
@@ -164,7 +187,7 @@
             \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} &
             \multicolumn{1}{c}{7}
             \\ \hline
-                                  &                       &   &  &  &  & \\
+            2                     & 0                     & 5 & 5 & 0 & 0 & 5 \\
             \hline
         \end{tabular}}}\\
 
@@ -176,7 +199,7 @@
             \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} &
             \multicolumn{1}{c}{7}
             \\ \hline
-                                  &                       &   &  &  &  & \\
+            2                     & 3                     & 5 & 5 & 0 & 0 & 5 \\
             \hline
         \end{tabular}}}\\
 
@@ -188,7 +211,7 @@
             \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} &
             \multicolumn{1}{c}{7}
             \\ \hline
-                                  &                       &   &  &  &  & \\
+            2                     & 3                     & 5 & 5 & 0 & 7 & 5 \\
             \hline
         \end{tabular}}}
 
@@ -196,6 +219,16 @@
 
 
     \question[25] [W6, \stars{4}] Let $G$ be a connected (strongly connected, if directed) weighted graph, where the weights are integers (i.e., weights can be positive, negative or zero), that does not contain any negative weighted cycles. Prove that there exists a shortest path between any two distinct vertices $s$ and $t$ such that no vertex on the path is repeated (i.e., the path does not include a cycle).
+
+    \textbf{Proof by contradiction:}
+
+    Assume all of the paths from s to t contain cycles (at least one repeated node).
+
+    The cycle in each path has a total positive weight or zero.
+
+    Because the cycle weight is positive or zero, removing the cycle would result in the same total length (if cycle weight is 0) or a shorter path weight (if cycle weight is positive).
+
+    i.e. a shortest path is possible without repeating nodes.
 
     \clearpage
 
@@ -210,24 +243,24 @@
         % Replace \square with \blacksquare for the option you would like to select.
         $\square$ stack, queue, priority queue \\
         $\square$ priority queue, queue, stack \\
-        $\square$ queue, stack, priority queue \\
+        $\blacksquare$ queue, stack, priority queue \\
         $\square$ stack, priority queue, queue
 
         \part[5] Djikstra's algorithm in full finds the shortest path from a source node to all other nodes in the graph. Now think again of the search case. That is, we are only interested in the shortest path between the source node $A$ and one other node $B$ in the graph. Which of the statements below is correct?
 
-        $\square$ We can stop Djikstra's algorithm once we have first overwritten the distance of node $B$. \\
+        $\blacksquare$ We can stop Djikstra's algorithm once we have first overwritten the distance of node $B$. \\
         $\square$ We can stop the search once we have processed node $B$.
 
         \part[10] Select the correct statements:
 
         $\square$ Dijkstra's algorithm can correctly find shortest paths in graphs that contain negative weight edges, but not negative weight cycles. \\
-        $\square$ The Bellman-Ford algorithm can correctly find shortest paths in graphs that contain negative weight edges, but not negative weight cycles. \\
+        $\blacksquare$ The Bellman-Ford algorithm can correctly find shortest paths in graphs that contain negative weight edges, but not negative weight cycles. \\
         $\square$ Dijkstra's algorithm can correctly find shortest paths in graphs that contain negative weight cycles. \\
         $\square$ The Bellman-Ford algorithm can correctly find shortest paths in graphs that contain negative weight cycles. \\
-        $\square$ The complexity of Djikstra's algorithm when using a Fibonacci heap is $\mathcal{O}(n\log n+m)$. \\
-        $\square$ The Bellman-Ford algorithm is $\mathcal{O}(nm)$. \\
-        $\square$ The first \texttt{for} loop in the Bellman-Ford algorithm determines whether the graph contains a negative weight cycle.\\
-        $\square$ The first \texttt{for} loop of the Bellman-Ford algorithm runs $n-1$ times.
+        $\blacksquare$ The complexity of Djikstra's algorithm when using a Fibonacci heap is $\mathcal{O}(n\log n+m)$. \\
+        $\blacksquare$ The Bellman-Ford algorithm is $\mathcal{O}(nm)$. \\
+        $\blacksquare$ The first \texttt{for} loop in the Bellman-Ford algorithm determines whether the graph contains a negative weight cycle.\\
+        $\blacksquare$ The first \texttt{for} loop of the Bellman-Ford algorithm runs $n-1$ times.
 
     \end{parts}
 
