@@ -1,0 +1,164 @@
+\documentclass[12pt]{exam}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{float}  % Figure placement
+\usepackage{minted}  % Code highlighting
+\usepackage{tikz}  % Flow chart
+\usepackage{lipsum}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{MnSymbol}
+\usepackage{pgffor}
+
+
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+\newcommand{\hwheaderfooter}[3]{
+\pagestyle{headandfoot}
+\firstpageheadrule
+\firstpageheader{#1}{#2}{#3}
+\runningheader{#1}{#2}{#3}
+\runningheadrule
+\firstpagefooter{}{\thepage}{}
+\runningfooter{}{\thepage}{}
+}
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+\newcommand{\stars}[1]{%
+    \foreach \n in {1,...,#1}{%
+        $\filledstar$%
+    }%
+}
+
+\hwheaderfooter{your\_name\_here}{HW 6: Template}{CSCI 406}
+
+
+\begin{document}
+\begin{center}
+  \fbox{\fbox{\parbox{\textwidth - 0.2 in}{\centering
+
+{Instructions: Please note that handwritten assignments \textbf{will not be graded}. Use the 
+provided \latex template to complete your homework. Please do not alter the order or spacing of 
+questions (keep each question on its own page). When you submit to Gradescope, you must mark 
+which page(s) correspond to each question. \textbf{You may not receive credit for unmarked 
+questions}. \\ When including graphical figures, we encourage the use of tools such as \href{https://dreampuf.github.io/GraphvizOnline/}{graphviz} or packages like \href{https://www.overleaf.com/learn/latex/TikZ_package}{tikz} for simple and complex figures. However, these may be handwritten only if they are neat and legible (as defined by the grader). }
+}}}
+\end{center}
+
+\textbf{List any collaborators (besides TAs or professors) here:}
+
+\begin{questions}
+
+\question[15] [W8, \stars{3}] Flow. The registrar at the School of Mimes has an unusual method of registration. Each mime (student) must select 10 pose classes that do not conflict with each other that they'd like to take. Of these, the registrar would like to assign 6 classes to each mime.
+
+There are $n$ mimes and $m$ classes with capacities $C_1, C_2, \dots, C_m$. The registrar wishes to assign all mimes to classes using a flow algorithm.
+
+From the list below, select all of the methods which the registrar could employ, only allowing integer flow amounts on each edge. \textbf{No explanation is necessary for this question.}
+
+Note that these methods do not need to all work together to construct a representative flow network, each just has to be a component of a reasonable one.
+
+$\square$ From the source, add edges with capacity 10 to every mime. \\
+$\square$ Draw weight 1 edges from every mime to every pose class they selected. \\
+$\square$ To the sink, add edges with capacity $C_k$ from pose class $k$. \\
+$\square$ The desired flow amount is $6n$. \\
+$\square$ The cut that separates the graph into the sink, and everything else, is necessarily a minimum cut.
+
+\clearpage
+
+\question[40] [W7, \stars{5}] 
+After the Titanic collided with an iceberg, many people were able to evacuate.
+However, not all were able to escape the wreckage.
+You are given a grid of the following symbols:
+\begin{itemize}
+    \item \texttt{*} - Exactly one person on a piece of floating ice.
+    % This person wants to escape from this piece of ice as soon as possible.
+    After the person leaves, the piece of ice sinks (and no one else can use it).
+    \item \texttt{W} - Water. People cannot move through the water because it is extremely cold.
+    \item \texttt{i} - A small piece of floating ice. Exactly one person can move to a floating piece of ice and wants to escape from it as soon as possible. After the person leaves, the piece of ice sinks (and no one else can use it).
+    \item \texttt{@} - Large Iceberg. At most one person can be on this iceberg at a time, but it will not sink after that person leaves.
+    \item \texttt{\%} - Lifeboat. These are stationary boats that can hold at most 5 people.
+\end{itemize}
+People can move to the 4 cardinal adjacencies of their current square (N, S, E, W).
+\textbf{Your goal is to get as many people as possible to the lifeboats, where they can stay until other ships arrive.}
+
+Considering the following instance of this problem:
+\vspace{0.8cm}
+{
+\large
+\begin{center}
+    \texttt{*\hspace{1.5 cm}W\hspace{1.5 cm}W\hspace{1.5 cm}\%} \\ \vspace{1 cm}
+    \texttt{i\hspace{1.5 cm}i\hspace{1.5 cm}@\hspace{1.5 cm}@} \\ \vspace{1 cm}
+    \texttt{W\hspace{1.5 cm}W\hspace{1.5 cm}i\hspace{1.5 cm}*} \\ \vspace{1 cm}
+    \texttt{i\hspace{1.5 cm}W\hspace{1.5 cm}i\hspace{1.5 cm}*} \\ \vspace{1 cm}
+\end{center}
+}
+
+\begin{parts}
+    \part[5] For the above instance, what is the maximum number
+        of people that can make it to a lifeboat.
+
+    \textbf{Answer:} $\boxed{\text{TYPE YOUR ANSWER HERE}}$
+
+    \part[10] What graph algorithm would you use to solve this problem?
+        Like the maze project, you may \textbf{not} modify the underlying algorithm
+        at all (you must encode/model all of the information for the
+        problem in the graph). \vspace{0.3cm} \\
+        $\square$ BFS \\
+        $\square$ DFS \\
+        $\square$ Ford Fulkerson or Edmonds-Karp \\
+        $\square$ Dijkstra's \\
+        $\square$ Prim's or Kruskal's \\
+        $\square$ Floyd-Warshall
+
+    \part[25] Draw the graph
+        that you would use to solve the instance of the problem given on
+        the last page.
+
+\end{parts}
+
+\clearpage
+
+\question[10] [W8, \stars{1}] Bipartite Matching. For the following questions, select whether the statement is true or false,
+    and write a \textit{brief} explanation of your reasoning.
+
+    \textbf{For all of these questions $G = (V, E)$ is a bipartite graph and $X$ and $Y$ are
+    the subsets $G$ such that all edges have one endpoint in $X$ and one in $Y$.
+    The graph $H$ is the flow network used in the reduction to max flow as described in class.}
+
+    \begin{parts}
+    \part Any valid solution to the maximum bipartite matching problem for $G$ contains exactly $\min(|X|, |Y|)$ edges.\\
+        $\square$ True $\square$ False
+
+    \part There are $|X| + |Y| + |E|$ edges in $H$.\\
+        $\square$ True $\square$ False
+
+    \part After computing the max flow of $H$, all edges in $H$ with flow of 1 constitute the solution to
+        the maximum bipartite matching problem for $G$.\\
+        $\square$ True $\square$ False
+
+    \part The complexity of solving the maximum bipartite matching problem using the max flow reduction
+        discussed in class is $\mathcal{O}(|V| \times |E|)$.\\
+        $\square$ True $\square$ False \hspace{0.5in} \textbf{No explanation necessary for this problem.}
+    
+    \end{parts}
+
+\clearpage
+\question[35] [W8, \stars{4}]
+Large companies like Yahoo! and Google have enormous advertising potential due to the simple fact that million of users look at their websites everyday.  By convincing people to provide some personal data or even by obtaining a user's location from their IP address, a company like Yahoo! or Google can show a user a targeted advertisement.  For example, a Computer Science major from the Colorado School of Mines may see a banner ad for apartments in Golden while an investment banker in Connecticut may see a banner ad for Lincoln Town Cars instead.
+
+   Deciding which ads to show which people involves some behind-the-scenes computation.  Suppose a popular website has identified $k$ distinct \textit{demographic groups} $G_1, G_2, \ldots,G_k$.  Note that these groups may overlap; for example $G_i$ can be equal to all residents of Colorado, and $G_j$ can be equal to all people with a computer science degree.  Suppose the site has contracts with $m$ different \textit{advertisers} $A_1, A_2, \ldots A_m$ to show exactly {\em two} copies of each ad to a subset of the $n$ {\em users} $U_1 \ldots U_n$ of the website.  Advertiser $A_i$ wants its ads shown only to users who belong to at least one of the demographic groups in the set $X_i\subseteq\left\lbrace G_1,G_2,\ldots,G_k\right\rbrace$.
+
+   Describe how to use Bipartite Matching/Network Flows to design a good \textit{advertising policy} - a way to show each of the $m$ ads to $2$ users of the site so that a total of $2m$ ads are shown to $2m$ distinct users.
+
+% close the document
+\end{questions}
+\end{document}

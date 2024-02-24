@@ -1,0 +1,130 @@
+\documentclass[12pt]{exam}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{float}  % Figure placement
+\usepackage{minted}  % Code highlighting
+\usepackage{tikz}  % Flow chart
+\usepackage{lipsum}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{MnSymbol}
+\usepackage{pgffor}
+\usepackage{mdframed}
+
+
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+\newcommand{\hwheaderfooter}[3]{
+\pagestyle{headandfoot}
+\firstpageheadrule
+\firstpageheader{#1}{#2}{#3}
+\runningheader{#1}{#2}{#3}
+\runningheadrule
+\firstpagefooter{}{\thepage}{}
+\runningfooter{}{\thepage}{}
+}
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+\newcommand{\stars}[1]{%
+    \foreach \n in {1,...,#1}{%
+        $\filledstar$%
+    }%
+}
+
+\hwheaderfooter{HW 5}{}{CSCI 406}
+
+
+\begin{document}
+\begin{center}
+  \fbox{\fbox{\parbox{\textwidth - 0.2 in}{\centering
+
+{Instructions: Please note that handwritten assignments \textbf{will not be graded}. Use the 
+provided \latex template to complete your homework. Please do not alter the order or spacing of 
+questions (keep each question on its own page). When you submit to Gradescope, you must mark 
+which page(s) correspond to each question. \textbf{You may not receive credit for unmarked 
+questions}. \\ When including graphical figures, we encourage the use of tools such as \href{https://dreampuf.github.io/GraphvizOnline/}{graphviz} or packages like \href{https://www.overleaf.com/learn/latex/TikZ_package}{tikz} for simple and complex figures. However, these may be handwritten only if they are neat and legible (as defined by the grader). }\\
+
+}}}
+\end{center}
+
+\textbf{List any collaborators (besides TAs or professors) here:}
+
+\begin{questions}
+
+\question[30] [W6, \stars{5}] Graph Modelling. [{\bf Note: Similar to the maze project, this is a graph modeling question.}] Consider the following problem:
+
+\begin{mdframed}
+    You are given a connected weighted graph $G$ that represents a road network connecting $n$ cities. An edge $(i,j)$ in $G$ means that there is a road segment from city $i$ to city $j$. The weight of edge $(i,j)$ denoted by $l_{ij}$ is the length of that road segment, which is {\em assumed to be an integer}. In addition, let $p_i$ denote the price of one unit of fuel at each city $i$ (assume that there are no gas stations on road segments and that fuel can only be purchased in cities). Finally, let $C$ (also an integer) denote the fuel tank capacity of your car. Determine the cheapest trip cost from start city $s$ to end city $e$. Your car uses one unit of fuel per unit of distance traveled and starts with an empty tank. You may choose to fill up your fuel tank by any integer amount as long as you don't exceed $C$.
+\end{mdframed}
+
+Describe a graph model (vertices and edges) that will enable one call of \textbf{unmodified} Dijkstra's to solve this problem. \textbf{Note:} we recommend that you define some notation to help you thoroughly describe your model.
+
+\begin{parts}
+    \part[5] Describe what each vertex of your graph represents. (Hint: there will be at most $n \times (C+1)$ nodes in your model.)
+
+    \part[15] Describe the conditions necessary for an edge to exist between two vertices in your graph. (Hint: think about actions that might change the state of your model.)
+    
+    \part[10] Describe how you would calculate the cost of an edge in your graph. Please provide a general mathematical expression (formula) for the edge weights. Note you might have different formulas for different edges, make sure to describe the conditions under which you would use each formula.
+
+\end{parts}
+
+\clearpage
+
+\question[15] [W6, \stars{2}] Provide an example of a directed graph with a negative weight edge, and a specific start and end node such that a Dijkstra's search (that is, Dijkstra's algorithm with the modification that it terminates after the end node is deleted from the priority queue) will \textbf{not} give the correct answer. Your example shouldn't need more than a handful of vertices.
+
+\clearpage
+
+\question[15] [W6, \stars{3}] Assume Bellman-Ford has identified the presence of a negative-weight cycle (in the second for loop in the algorithm in the slides). Explain how to identify and output the vertices that constitute this cycle.
+
+\clearpage
+\question[10] [W7, \stars{1}] For the following questions, select the true statement(s). \textbf{No explanation is necessary for these questions.}
+
+\begin{parts}
+    \part What is true about the residual graph in the Ford-Fulkerson algorithm?
+
+    $\square$ The sum of residual capacities over all edges in the residual graph is equal to the sum of the capacities in the original graph. \\
+    $\square$ The number of edges in the residual graph is at least equal to the number of directed edges in the flow network. \\
+    $\square$ The capacity of any edge in residual graph does not exceed the capacity of the corresponding edge in the flow network, if it exists. \\
+    $\square$ The capacity of an edge in the residual graph depends on the direction, quantity, and capacities of the pipes between the two vertices.
+
+    \part What must be true if there is a directed path in the residual graph from the source to the sink in the Ford-Fulkerson algorithm?
+
+    $\square$ The flow is not maximized. \\
+    $\square$ The path is an augmenting path. \\
+    $\square$ There is a cut in the original flow graph whose capacity is equal to the flow in the network.
+\end{parts}
+\clearpage
+
+\question[10] [W7, \stars{1}] Flow. For the following questions, select whether the statement is true or false,
+    and write a \textit{brief} explanation of your reasoning.
+\begin{parts}
+    \part The maximum flow in a flow network is equal to the minimum cut of the network.\\
+    $\square$ True $\square$ False
+
+    \part In the residual graph of the maximum flow, there are no augmenting paths from the source to the sink. \\
+    $\square$ True $\square$ False
+
+    \part In a residual network, the capacity of an edge can be zero.\\
+    $\square$ True $\square$ False
+
+    \part If a single edge's capacity in a flow network is increased, the maximum flow value can only either stay the same or increase.\\
+    $\square$ True $\square$ False
+    
+\end{parts}
+\clearpage
+\question[20] [W7, \stars{3}] How can standard, unmodified max-flow algorithms (which only work with a single source and single sink node) be applied to a graph with multiple sources and sinks? Describe the necessary steps or considerations.
+
+\clearpage
+
+% close the document
+\end{questions}
+\end{document}
