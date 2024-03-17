@@ -17,6 +17,7 @@
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{multicol}
+\usepackage{forest}
 
 
 
@@ -70,16 +71,16 @@
 
     \begin{parts}
         \part Dynamic programming is a technique to optimize certain types of recursive algorithms.\\
-        $\square$ True $\square$ False
+        $\blacksquare$ True $\square$ False
 
         \part Dynamic programming is a technique which increases time complexity in order to decrease space complexity.\\
-        $\square$ True $\square$ False
+        $\square$ True $\blacksquare$ False
 
         \part Dynamic programming can be applied to problems where there are multiple ways to arrive at the same subproblem instance via many branches of a recursion tree.\\
-        $\square$ True $\square$ False
+        $\blacksquare$ True $\square$ False
 
         \part When computing values in a dynamic programming table, we always start in the upper-left corner of the table.\\
-        $\square$ True $\square$ False
+        $\square$ True $\blacksquare$ False
     \end{parts}
     \clearpage
 
@@ -100,7 +101,7 @@
     \end{multicols}
 
     \begin{parts}
-        \part $\boxed{\text{ANSWER HERE}}$ --- The following function:
+        \part $\boxed{\text{Top-Down DP}}$ --- The following function:
         \begin{minted}{python}
     DP = {}
     def F(n):
@@ -110,16 +111,16 @@
         DP[n] = F(n-1) + F(n-2)
         return DP[n]
     \end{minted}
-        \part $\boxed{\text{ANSWER HERE}}$ --- Fibonacci of $n$
-        \part $\boxed{\text{ANSWER HERE}}$ --- $F(n) = F(n-1) + F(n-2)$
-        \part $\boxed{\text{ANSWER HERE}}$ --- The following function:
+        \part $\boxed{\text{Root Instance}}$ --- Fibonacci of $n$
+        \part $\boxed{\text{Recurrence Relation}}$ --- $F(n) = F(n-1) + F(n-2)$
+        \part $\boxed{\text{Recursive Algorithm}}$ --- The following function:
         \begin{minted}{python}
     def F(n):
         if f == 0: return 0
         if f == 1: return 1
         return F(n-1) + F(n-2)
     \end{minted}
-        \part $\boxed{\text{ANSWER HERE}}$ --- The following graph:
+        \part $\boxed{\text{Computation DAG}}$ --- The following graph:
 
         \begin{tikzpicture}[
             node distance = 1.5cm,
@@ -153,7 +154,7 @@
     $\square$ $k^n$ \\
     $\square$ $n^k$ \\
     $\square$ $\binom{n}{k}$ \\
-    $\square$ $2\binom{n}{k} - 1$ \\
+    $\blacksquare$ $2\binom{n}{k} - 1$ \\
     $\square$ $(n + k) k$
     \clearpage
 
@@ -179,32 +180,73 @@
 
         \begin{tabular}{ | r | r | r | r | r | r | r | r | r | } \hline
             $n / k$ & ~~0~~ & ~~1~~ & ~~2~~ & ~~3~~ & ~~4~~ & ~~5~~ & ~~6~~ & ~~7~~ \\ \hline
-            0       &       &       &       &       &       &       &       &       \\ \hline
-            1       &       &       &       &       &       &       &       &       \\ \hline
-            2       &       &       &       &       &       &       &       &       \\ \hline
-            3       &       &       &       &       &       &       &       &       \\ \hline
-            4       &       &       &       &       &       &       &       &       \\ \hline
-            5       &       &       &       &       &       &       &       &       \\ \hline
-            6       &       &       &       &       &       &       &       &       \\ \hline
-            7       &       &       &       &       &       &       &       &       \\ \hline
+            0       & 1     & 0     & 0     & 0     & 0     & 0     & 0     & 0     \\ \hline
+            1       & 0     & 1     & 0     & 0     & 0     & 0     & 0     & 0     \\ \hline
+            2       & 0     & 1     & 1     & 0     & 0     & 0     & 0     & 0     \\ \hline
+            3       & 0     & 1     & 3     & 1     & 0     & 0     & 0     & 0     \\ \hline
+            4       & 0     & 1     & 7     & 6     & 1     & 0     & 0     & 0     \\ \hline
+            5       & 0     & 1     & 15    & 25    & 10    & 1     & 0     & 0     \\ \hline
+            6       & 0     & 1     & 31    & 90    & 65    & 15    & 1     & 0     \\ \hline
+            7       & 0     & 1     & 63    & 301   & 350   & 140   & 21    & 1     \\ \hline
         \end{tabular}
 
         \part[10] Write an unoptimized \textbf{recursive algorithm} (no loops) to solve this problem in the programming language of your choice. Assume all necessary libraries/headers are present (only write the function). \textbf{Present your code using the minted \latex library. You shouldn't need more than 10 lines.}
 
         \begin{minted}{python}
-YOUR_CODE_HERE
+        def stirling(n, k):
+            # Base case 1 & 4
+            if (k == 0 and n > 0) or (n < k):
+                return 0
+            # Base case 2 & 3
+            elif (n == k and k >= 0) or (k == 1 and n > 1):
+                return 1
+            # General Case
+            else:
+                return (k * stirling(n-1, k)) + stirling(n-1, k-1)
+
+
     \end{minted}
 
         \part[5] Write a \textbf{``top-down'' DP solution} that augments the recursive algorithm above with memoization. Store intermediate results in a dictionary/array and check to see if a value has already been determined before computing it again. If the value has already been computed, then return it instead of making the recursive call(s).
 
         \begin{minted}{python}
-YOUR_CODE_HERE
+        def sterling_top_down(n, k):
+            # Create a dictionary to store the results
+            S = {}
+            # Base case 1 & 4
+            if (k == 0 and n > 0) or (n < k):
+                return 0
+            # Base case 2 & 3
+            elif (n == k and k >= 0) or (k == 1 and n > 1):
+                return 1
+            # General Case
+            else:
+                if (n, k) not in S:
+                    S[(n, k)] = (k * sterling_top_down(n-1, k)) + \
+                        sterling_top_down(n-1, k-1)
+                return S[(n, k)]
     \end{minted}
 
         \part[10] Write a \textbf{``bottom-up'', iterative DP solution} that uses a \texttt{for} loop and an array to compute the solution starting from the base cases. Assume $n$ and $k$ have been previously provided to your program.
 
         \begin{minted}{python}
-YOUR_CODE_HERE
+        def stirling_bottom_up(n, k):
+            # Create a 2D array to store the results
+            S = [[0 for _ in range(k+1)] for _ in range(n+1)]
+
+            for row in range(n+1):
+                # Base cases
+                if k >= 1 and row > 1:
+                    S[row][1] = 1
+                if k >= row:
+                    S[row][row] = 1
+
+                # General Case
+                if row >= 3 and k >= 2:
+                    for col in range(2, min(row, k)+1):
+                        S[row][col] = (col * S[row-1][col]) + S[row-1][col-1]
+
+            return S[n][k]
     \end{minted}
 
     \end{parts}
@@ -244,21 +286,78 @@ YOUR_CODE_HERE
     \begin{parts}
         \part[5] What is the input to the \textbf{subproblem instance}?
 
+        The input to the subproblem instance is the length of the rod, $n$.
+
         \part[5] Which subproblem instances are the \textbf{base cases}? What are their values?
+
+
+        The base cases are when the length of the rod is 1, 2, or 3. Their values are 1, 2, and 4, respectively.
 
         \part[5] Develop notation and describe a \textbf{recurrence relation} between the subproblem instances.
 
+        Let $W(n)$ be the number of ways to construct a rod of length $n$. Then, the recurrence relation is:
+        \begin{align*}
+            W(n) = W(n-1) + W(n-2) + W(n-3)
+        \end{align*}
+
+
         \part[10] Write an unoptimized \textbf{recursive algorithm} (no loops) to solve this problem in the programming language of your choice. Assume all necessary libraries/headers are present (only write the function). \textbf{Present your code using the minted \latex library. You shouldn't need more than 10 lines.}
         \begin{minted}{python}
-YOUR_CODE_HERE
+        def rod(n):
+            # Base cases
+            if n == 1:
+                return 1
+            if n == 2:
+                return 2
+            if n == 3:
+                return 4
+            # General Case
+            return rod(n-1) + rod(n-2) + rod(n-3)
     \end{minted}
 
         \part[5] Draw the first three levels (the root is the first level) of the \textbf{recursion tree} for $n = 12$ and highlight the repeated computations, that is, identical recursive calls made more than once or \textbf{will} be made more than once if the tree was extended to further levels.
 
+        \begin{forest}
+            for tree={
+            circle,
+            draw,
+            minimum size=2em,
+            inner sep=1pt,
+            s sep=10mm,
+            },
+            [12, name=root
+            [11
+                [10, fill=red!20]
+                [9, fill=red!20]
+                [8, fill=red!20]
+            ]
+            [10, fill=red!20
+            [9, fill=red!20]
+            [8, fill=red!20]
+            [7, fill=red!20]
+            ]
+            [9, fill=red!20
+            [8, fill=red!20]
+            [7, fill=red!20]
+            [6, fill=red!20]
+            ]
+            ]
+        \end{forest}
+
         \part[10] Write a \textbf{``bottom-up'', iterative DP solution} that uses a \texttt{for} loop and an array to compute the solution starting from the base cases. Assume $n$ has been previously provided to your program.
 
         \begin{minted}{python}
-YOUR_CODE_HERE
+        def rod_bottom_up(n):
+            # Create an array to store the results
+            W = [0] * (max(n+1,4))
+            # Base cases
+            W[1] = 1
+            W[2] = 2
+            W[3] = 4
+            # General Case
+            for i in range(4, n+1):
+                W[i] = W[i-1] + W[i-2] + W[i-3]
+            return W[n]
 \end{minted}
 
     \end{parts}
