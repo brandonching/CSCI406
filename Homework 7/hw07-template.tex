@@ -1,0 +1,268 @@
+\documentclass[12pt]{exam}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{float}  % Figure placement
+\usepackage{minted}  % Code highlighting
+\usepackage{tikz}  % Flow chart
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{lipsum}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{MnSymbol}
+\usepackage{pgffor}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{multicol}
+
+
+
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+\newcommand{\hwheaderfooter}[3]{
+\pagestyle{headandfoot}
+\firstpageheadrule
+\firstpageheader{#1}{#2}{#3}
+\runningheader{#1}{#2}{#3}
+\runningheadrule
+\firstpagefooter{}{\thepage}{}
+\runningfooter{}{\thepage}{}
+}
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+\newcommand{\stars}[1]{%
+    \foreach \n in {1,...,#1}{%
+        $\filledstar$%
+    }%
+}
+
+\hwheaderfooter{HW 7}{Ching}{CSCI 406}
+
+
+\begin{document}
+\begin{center}
+    \fbox{\fbox{\parbox{\textwidth - 0.2 in}{\centering
+
+                {Instructions: Please note that handwritten assignments \textbf{will not be graded}. Use the
+                    provided \latex template to complete your homework. Please do not alter the order or spacing of
+                    questions (keep each question on its own page). When you submit to Gradescope, you must mark
+                    which page(s) correspond to each question. \textbf{You may not receive credit for unmarked
+                        questions}. \\ When including graphical figures, we encourage the use of tools such as \href{https://dreampuf.github.io/GraphvizOnline/}{graphviz} or packages like \href{https://www.overleaf.com/learn/latex/TikZ_package}{tikz} for simple and complex figures. However, these may be handwritten only if they are neat and legible (as defined by the grader). }
+            }}}
+\end{center}
+
+\textbf{List any collaborators (besides TAs or professors) here:}
+
+\begin{questions}
+
+    \question[5] [W9, \stars{1}] For the following questions, select whether the statement is true or false.
+    \textbf{No explanation is necessary for these problems.}
+
+    \begin{parts}
+        \part Dynamic programming is a technique to optimize certain types of recursive algorithms.\\
+        $\square$ True $\square$ False
+
+        \part Dynamic programming is a technique which increases time complexity in order to decrease space complexity.\\
+        $\square$ True $\square$ False
+
+        \part Dynamic programming can be applied to problems where there are multiple ways to arrive at the same subproblem instance via many branches of a recursion tree.\\
+        $\square$ True $\square$ False
+
+        \part When computing values in a dynamic programming table, we always start in the upper-left corner of the table.\\
+        $\square$ True $\square$ False
+    \end{parts}
+    \clearpage
+
+    \question[10] [W9, \stars{2}] DP Terminology. Consider the Fibonacci problem that was discussed in class. Match the following statements with the following terms.
+
+    \begin{multicols}{2}
+        \begin{enumerate}[label=(\Alph*)]
+            \item Subproblem Instance
+            \item Base Instance / Base Case
+            \item Root Instance
+            \item Recurrence Relation
+            \item Recursive Algorithm
+            \item Top-Down DP
+            \item Bottom-Up DP
+            \item Recursion Tree
+            \item Computation DAG
+        \end{enumerate}
+    \end{multicols}
+
+    \begin{parts}
+        \part $\boxed{\text{ANSWER HERE}}$ --- The following function:
+        \begin{minted}{python}
+    DP = {}
+    def F(n):
+        if n in DP: return DP[n]
+        if f == 0: return 0
+        if f == 1: return 1
+        DP[n] = F(n-1) + F(n-2)
+        return DP[n]
+    \end{minted}
+        \part $\boxed{\text{ANSWER HERE}}$ --- Fibonacci of $n$
+        \part $\boxed{\text{ANSWER HERE}}$ --- $F(n) = F(n-1) + F(n-2)$
+        \part $\boxed{\text{ANSWER HERE}}$ --- The following function:
+        \begin{minted}{python}
+    def F(n):
+        if f == 0: return 0
+        if f == 1: return 1
+        return F(n-1) + F(n-2)
+    \end{minted}
+        \part $\boxed{\text{ANSWER HERE}}$ --- The following graph:
+
+        \begin{tikzpicture}[
+            node distance = 1.5cm,
+            circle/.style = {draw, shape=circle, minimum size=1cm},
+            >=stealth,  % Set the arrow tip style
+            line/.style = {draw, -{Stealth[length=3mm, width=3mm]}},
+            ]
+            \node[circle] (F0) {$F(0)$};
+            \node[circle, right=of F0] (F1) {$F(1)$};
+            \node[circle, below=of F1] (F2) {$F(2)$};
+            \node[circle, right=of F2] (F3) {$F(3)$};
+            \node[circle, below=of F3] (F4) {$F(4)$};
+            \node[circle, right=of F4] (F5) {$F(5)$};
+
+            \draw[line] (F2) -- (F1);
+            \draw[line] (F2) -- (F0);
+            \draw[line] (F3) -- (F2);
+            \draw[line] (F3) -- (F1);
+            \draw[line] (F4) -- (F3);
+            \draw[line] (F4) -- (F2);
+            \draw[line] (F5) -- (F4);
+            \draw[line] (F5) -- (F3);
+        \end{tikzpicture}
+    \end{parts}
+    \clearpage
+
+    \question[5] [W9, \stars{3}] Binomial Coefficients. Select the true statement. \textbf{No explanation is necessary for this question.}
+
+    In terms of $n$ and $k$, how many calls to the recursive algorithm are required to evaluate $\binom{n}{k}$?
+
+    $\square$ $k^n$ \\
+    $\square$ $n^k$ \\
+    $\square$ $\binom{n}{k}$ \\
+    $\square$ $2\binom{n}{k} - 1$ \\
+    $\square$ $(n + k) k$
+    \clearpage
+
+    \question[40] [W9, \stars{5}] Stirling Numbers. This question is related to Wednesday's worksheet.
+
+    Recall the definition of \textit{Stirling numbers of the second kind}:
+
+    \textbf{Base Cases}
+    \begin{align}
+        S_{n,0} & = 0  & \forall n > 0 \\
+        S_{n,k} & = 1  & n = k \ge 0   \\
+        S_{n,1} & =  1 & \forall n > 1 \\
+        S_{n,k} & = 0  & n < k
+    \end{align}
+
+    \textbf{General Case}
+    \begin{align}
+        S_{n,k} & = k \times S_{n-1,k} + S_{n-1,k-1}
+    \end{align}
+
+    \begin{parts}
+        \part[15] Fill in the following \textbf{table} (starting with the base-cases).
+
+        \begin{tabular}{ | r | r | r | r | r | r | r | r | r | } \hline
+            $n / k$ & ~~0~~ & ~~1~~ & ~~2~~ & ~~3~~ & ~~4~~ & ~~5~~ & ~~6~~ & ~~7~~ \\ \hline
+            0       &       &       &       &       &       &       &       &       \\ \hline
+            1       &       &       &       &       &       &       &       &       \\ \hline
+            2       &       &       &       &       &       &       &       &       \\ \hline
+            3       &       &       &       &       &       &       &       &       \\ \hline
+            4       &       &       &       &       &       &       &       &       \\ \hline
+            5       &       &       &       &       &       &       &       &       \\ \hline
+            6       &       &       &       &       &       &       &       &       \\ \hline
+            7       &       &       &       &       &       &       &       &       \\ \hline
+        \end{tabular}
+
+        \part[10] Write an unoptimized \textbf{recursive algorithm} (no loops) to solve this problem in the programming language of your choice. Assume all necessary libraries/headers are present (only write the function). \textbf{Present your code using the minted \latex library. You shouldn't need more than 10 lines.}
+
+        \begin{minted}{python}
+YOUR_CODE_HERE
+    \end{minted}
+
+        \part[5] Write a \textbf{``top-down'' DP solution} that augments the recursive algorithm above with memoization. Store intermediate results in a dictionary/array and check to see if a value has already been determined before computing it again. If the value has already been computed, then return it instead of making the recursive call(s).
+
+        \begin{minted}{python}
+YOUR_CODE_HERE
+    \end{minted}
+
+        \part[10] Write a \textbf{``bottom-up'', iterative DP solution} that uses a \texttt{for} loop and an array to compute the solution starting from the base cases. Assume $n$ and $k$ have been previously provided to your program.
+
+        \begin{minted}{python}
+YOUR_CODE_HERE
+    \end{minted}
+
+    \end{parts}
+    \clearpage
+
+    \question[40] [W9, \stars{5}] Please present your code using the \texttt{minted} \latex library.
+
+    You want to construct a rod of integer length $n$ using smaller rods. The smaller rods are available in three
+    lengths: 1, 2, and 3 ft respectively. There are an unlimited number of these smaller rods available.
+    Your plan is to glue several of the smaller rods end-to-end to create a longer rod.
+
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width = 2 in]{Homeworks/theplank.png}
+    %     \caption{There are 7 ways to make a 4 ft plank.}
+    %     \label{fig:plank}
+    % \end{figure}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|
+                >{\columncolor[HTML]{00B050}}c cc
+                >{\columncolor[HTML]{00B050}}c |}
+            \hline
+            \multicolumn{1}{|c|}{\cellcolor[HTML]{00B050}\textbf{1}} & \multicolumn{1}{c|}{\cellcolor[HTML] {00B050}\textbf{1}} & \multicolumn{1}{c|}{\cellcolor[HTML]{00B050}\textbf{1}} & \textbf{1} \\ \hline
+            \multicolumn{1}{|c|}{\cellcolor[HTML]{00B050}\textbf{1}} & \multicolumn{1}{c|}{\cellcolor[HTML]{00B050}\textbf{1}}  & \multicolumn{2}{c|}{\cellcolor[HTML]{00B0F0}\textbf{2}}              \\ \hline
+            \multicolumn{2}{|c|}{\cellcolor[HTML]{00B0F0}\textbf{2}} & \multicolumn{1}{c|}{\cellcolor[HTML]{00B050}\textbf{1}}  & \textbf{1}                                                           \\ \hline
+            \multicolumn{1}{|c|}{\cellcolor[HTML]{00B050}\textbf{1}} & \multicolumn{2}{c|}{\cellcolor[HTML]{00B0F0}\textbf{2}}  & \textbf{1}                                                           \\ \hline
+            \multicolumn{2}{|c|}{\cellcolor[HTML]{00B0F0}\textbf{2}} & \multicolumn{2}{c|}{\cellcolor[HTML]{00B0F0}\textbf{2}}                                                                         \\ \hline
+            \multicolumn{1}{|c|}{\cellcolor[HTML]{00B050}\textbf{1}} & \multicolumn{3}{c|}{\cellcolor[HTML]{D60CBE}\textbf{3}}                                                                         \\ \hline
+            \multicolumn{3}{|c|}{\cellcolor[HTML]{D60CBE}\textbf{3}} & \textbf{1}                                                                                                                      \\ \hline
+        \end{tabular}
+        \caption{Each of the 7 rows above gives us a different way to construct a 4 ft rod.}
+    \end{table}
+
+    Question: In how many ways can you glue the three types of smaller rods together to create a rod of length $n > 0$? The table above enumerates all of the possibilities when $n = 4$ and giving an answer of 7.
+
+    \begin{parts}
+        \part[5] What is the input to the \textbf{subproblem instance}?
+
+        \part[5] Which subproblem instances are the \textbf{base cases}? What are their values?
+
+        \part[5] Develop notation and describe a \textbf{recurrence relation} between the subproblem instances.
+
+        \part[10] Write an unoptimized \textbf{recursive algorithm} (no loops) to solve this problem in the programming language of your choice. Assume all necessary libraries/headers are present (only write the function). \textbf{Present your code using the minted \latex library. You shouldn't need more than 10 lines.}
+        \begin{minted}{python}
+YOUR_CODE_HERE
+    \end{minted}
+
+        \part[5] Draw the first three levels (the root is the first level) of the \textbf{recursion tree} for $n = 12$ and highlight the repeated computations, that is, identical recursive calls made more than once or \textbf{will} be made more than once if the tree was extended to further levels.
+
+        \part[10] Write a \textbf{``bottom-up'', iterative DP solution} that uses a \texttt{for} loop and an array to compute the solution starting from the base cases. Assume $n$ has been previously provided to your program.
+
+        \begin{minted}{python}
+YOUR_CODE_HERE
+\end{minted}
+
+    \end{parts}
+
+    % close the document
+\end{questions}
+\end{document}
