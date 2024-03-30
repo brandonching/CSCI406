@@ -1,0 +1,110 @@
+\documentclass[12pt]{exam}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{float}  % Figure placement
+\usepackage{minted}  % Code highlighting
+\usepackage{tikz}  % Flow chart
+\usepackage{lipsum}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{MnSymbol}
+\usepackage{pgffor}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{array}
+
+
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+\newcommand{\hwheaderfooter}[3]{
+\pagestyle{headandfoot}
+\firstpageheadrule
+\firstpageheader{#1}{#2}{#3}
+\runningheader{#1}{#2}{#3}
+\runningheadrule
+\firstpagefooter{}{\thepage}{}
+\runningfooter{}{\thepage}{}
+}
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+\newcommand{\stars}[1]{%
+    \foreach \n in {1,...,#1}{%
+        $\filledstar$%
+    }%
+}
+
+\hwheaderfooter{Ching}{HW 8}{CSCI 406}
+
+
+\begin{document}
+\begin{center}
+    \fbox{\fbox{\parbox{\textwidth - 0.2 in}{\centering
+
+                {Instructions: Please note that handwritten assignments \textbf{will not be graded}. Use the
+                    provided \latex template to complete your homework. Please do not alter the order or spacing of
+                    questions (keep each question on its own page). When you submit to Gradescope, you must mark
+                    which page(s) correspond to each question. \textbf{You may not receive credit for unmarked
+                        questions}. \\ When including graphical figures, we encourage the use of tools such as \href{https://dreampuf.github.io/GraphvizOnline/}{graphviz} or packages like \href{https://www.overleaf.com/learn/latex/TikZ_package}{tikz} for simple and complex figures. However, these may be handwritten only if they are neat and legible (as defined by the grader). }
+            }}}
+\end{center}
+
+\textbf{List any collaborators (besides TAs or professors) here:}
+
+\begin{questions}
+
+    \question[55] [W9, \stars{5}] The traditional world chess championship is a match of 24 games. The current champion retains the title in case the match is a tie\footnote{This is no longer the format used to determine the champion. Instead, sets of progressively shorter games are played until one player has broken the tie.}. Each game ends in a win, loss, or draw (tie) where wins count as 1, losses as 0, and draws as $\frac{1}{2}$. The players take turns playing white and black with the champion playing white in the first game.
+
+    Assume that $W(c)$, $D(c)$, and $L(c)$ return the probabilities that the champion wins, draws, or loses {\em one game} while playing color $c \in \{w, b\}$, respectively\footnote{Chess outcomes tend to be better playing white because white gets the first move.}. For example, $D(b)$ is the probability that the champion draws while playing black. You won't specifically need to use this, but convince yourself that $W(c) + D(c) + L(c) = 1.0$.
+
+    Your task is to \textbf{calculate the champion's probability of retaining the title}.
+
+    For the following questions, use the variable $g$ to represent the number of games remaining in the match, and the variable $i$ to represent the (possibly fractional) number of points that the champion needs to win to retain the title.
+
+    \begin{parts}
+        \part[5] What are the inputs to the \textbf{subproblem instance}? (\textbf{Hint:} your answer will be in terms of the variables described above.)
+
+        \part[5] Which subproblem instances are the \textbf{base cases}? What are their values? (\textbf{Hint:} think about subproblem instances where the probability of the champion retaining the title are not dependent on any of the win/draw/loss probabilities.)
+
+        \part[15] Given your answers to the above questions, develop notation and write a \textit{formula} the \textbf{recurrence relation}. Assume that the function $C(g)$ returns the color the champion is playing in game $g$.
+
+        \part[5] How many \textbf{dimensions} will the dynamic programming table (used in bottom-up DP) have? What will each dimension of your table represent? What is the domain of each dimension?
+
+        \part[5] In \textbf{which cell of your bottom-up DP table will you find the answer} to the posed question (the champion's probability of retaining the title)?
+
+        \part[10] What \textbf{iteration order} is required to compute the bottom-up DP table?
+
+        \part[10] Imagine that the championship match was a variable number of games $n$. What is the \textbf{complexity of this bottom-up DP algorithm in terms of $n$}?
+
+    \end{parts}
+    \clearpage
+
+    \question[45] [W10, \stars{4}] A palindrome is a string that is equal to itself when reversed. Formally, a string $s_1s_2{\cdots}s_n$ is a palindrome if $s_1s_2{\cdots}s_{n-1}s_n = s_ns_{n-1}{\cdots}s_2s_1$. According to wikipedia, the 19-letter Finnish word saippuakivikauppias is the
+    longest palindromic word in everyday use.
+
+    Given a string, $S$, you want to find the \textbf{longest palindromic subsequence}. That is, the longest subsequence of $S$ where the subsequence is a palindrome. Remember, a subsequence is \textit{not} necessarily continuous.
+
+    \begin{parts}
+        \part[5] Provide two examples of longest palindromic subsequences for the following string: \texttt{COMPUTERSCIENCE}.
+
+        \part[5] What are the inputs to the \textbf{subproblem instance}?
+
+        \part[5] Which subproblem instances are the \textbf{base cases}? What are their values?
+
+        \part[15] Given your answers to the above questions, develop notation and write a \textit{formula} the \textbf{recurrence relation}.
+
+        \part[15]Write a \textbf{``top-down'' DP solution} that augments the recursive algorithm above with memoization. Store intermediate results in a dictionary/array and check to see if a value has already been determined before computing it again. If the value has already been computed, then return it instead of making the recursive call(s). \textbf{Present your code using the minted \latex library. You shouldn't need more than 10 lines.}
+
+    \end{parts}
+
+    % close the document
+\end{questions}
+\end{document}
