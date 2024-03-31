@@ -59,6 +59,7 @@
 
 \textbf{List any collaborators (besides TAs or professors) here:}
 
+\pagebreak
 \begin{questions}
 
     \question[55] [W9, \stars{5}] The traditional world chess championship is a match of 24 games. The current champion retains the title in case the match is a tie\footnote{This is no longer the format used to determine the champion. Instead, sets of progressively shorter games are played until one player has broken the tie.}. Each game ends in a win, loss, or draw (tie) where wins count as 1, losses as 0, and draws as $\frac{1}{2}$. The players take turns playing white and black with the champion playing white in the first game.
@@ -72,17 +73,53 @@
     \begin{parts}
         \part[5] What are the inputs to the \textbf{subproblem instance}? (\textbf{Hint:} your answer will be in terms of the variables described above.)
 
+        The inputs to the subproblem instance are the number of games remaining in the match $g$, the number of points that the champion needs to win to retain the title $i$, and the color the champion is playing in the current game $c$.
+
+        For example, the subproblem instance $P(g=24, i=12, c=w)$ represents the original problem instance where the champion needs to win 12 games to retain the title, where $P(g, i, c)$ is the probability of the champion retaining the title.
+
         \part[5] Which subproblem instances are the \textbf{base cases}? What are their values? (\textbf{Hint:} think about subproblem instances where the probability of the champion retaining the title are not dependent on any of the win/draw/loss probabilities.)
 
+        The base cases are when the champion has already won or lost the title. The base cases are:
+        \begin{itemize}
+            \item If the champion has already won the title (needs to win 0 games of the remaining $(i=0)$), the probability of retaining the title is 1.0.
+            \item If the champion has already lost the title (remaining games is less than games needed to win $(g<i)$), the probability of retaining the title is 0.0.
+        \end{itemize}
+
+        \pagebreak
         \part[15] Given your answers to the above questions, develop notation and write a \textit{formula} the \textbf{recurrence relation}. Assume that the function $C(g)$ returns the color the champion is playing in game $g$.
+
+        The recurrence relation is:
+        \begin{align*}
+            P(g, i, c) = \begin{cases}
+                             1.0                                            & \text{if } i <= 0 \\
+                             0.0                                            & \text{if } g < i  \\
+                             W(c) \cdot P(g-1, i-1, \text{next}(c))                             \\
+                             \indent + D(c) \cdot P(g-1, i-\frac{1}{2}, \text{next}(c))         \\
+                             \indent + L(c) \cdot P(g-1, i, \text{next}(c)) & \text{otherwise}
+                         \end{cases}
+        \end{align*}
+        where $\text{next}(c)$ is the color the champion will play in the next game, $\text{next}(w) = b$ and $\text{next}(b) = w$.
 
         \part[5] How many \textbf{dimensions} will the dynamic programming table (used in bottom-up DP) have? What will each dimension of your table represent? What is the domain of each dimension?
 
+        The dynamic programming table will have three dimensions, one for each varible $g$, $i$, and $c$. The domain of each dimension is as follows:
+        \begin{itemize}
+            \item $g \in [0, 24]$.
+            \item $i \in [0, 12]$.
+            \item $c \in \{w, b\}$.
+        \end{itemize}
+
         \part[5] In \textbf{which cell of your bottom-up DP table will you find the answer} to the posed question (the champion's probability of retaining the title)?
+
+        The answer to the posed question will be found in the cell $P(24, 12, w)$.
 
         \part[10] What \textbf{iteration order} is required to compute the bottom-up DP table?
 
+        The iteration order required to compute the bottom-up DP table is to iterate over the number of games remaining $g$ from 0 to 24, the number of games the champion needs to win $i$ from 0 to 12, and the color the champion is playing $c$ from \{w, b\}.
+
         \part[10] Imagine that the championship match was a variable number of games $n$. What is the \textbf{complexity of this bottom-up DP algorithm in terms of $n$}?
+
+        The complexity of this bottom-up DP algorithm in terms of $n$ is $O(n^2)$. This is because the algorithm iterates over the number of games remaining $g$ from 0 to $n$ and the number of games the champion needs to win $i$ from 0 to $\frac{n}{2}$.
 
     \end{parts}
     \clearpage
@@ -95,13 +132,53 @@
     \begin{parts}
         \part[5] Provide two examples of longest palindromic subsequences for the following string: \texttt{COMPUTERSCIENCE}.
 
+        \begin{itemize}
+            \item \texttt{CETECE}
+            \item \texttt{COMSOMC}
+        \end{itemize}
+
         \part[5] What are the inputs to the \textbf{subproblem instance}?
+
+        The inputs to the subproblem instance are the start and end indices of the string $S$, represented as $i$ and $j, 0 \leq i \leq j \leq n$, where $n$ is the length of the string $S$.
 
         \part[5] Which subproblem instances are the \textbf{base cases}? What are their values?
 
+        The base cases are:
+        \begin{itemize}
+            \item If $i = j$, the length of the longest palindromic subsequence is 1.
+            \item If $i + 1 = j$ and $S[i] = S[j]$, the length of the longest palindromic subsequence is 2.
+        \end{itemize}
+
         \part[15] Given your answers to the above questions, develop notation and write a \textit{formula} the \textbf{recurrence relation}.
 
+        The recurrence relation is:
+        \begin{align*}
+            LPS(i, j) = \begin{cases}
+                            1                              & \text{if } i = j                              \\
+                            2                              & \text{if } i + 1 = j \text{ and } S[i] = S[j] \\
+                            \max(LPS(i+1, j), LPS(i, j-1)) & \text{otherwise}
+                        \end{cases}
+        \end{align*}
+
+        \pagebreak
         \part[15]Write a \textbf{``top-down'' DP solution} that augments the recursive algorithm above with memoization. Store intermediate results in a dictionary/array and check to see if a value has already been determined before computing it again. If the value has already been computed, then return it instead of making the recursive call(s). \textbf{Present your code using the minted \latex library. You shouldn't need more than 10 lines.}
+
+        \begin{minted}{python}
+def longest_palindromic_substring(S):
+    memo = {}
+    def dp(i, j):
+        if i > j:
+            return 0
+        if i == j:
+            return 1
+        if (i, j) not in memo:
+            if S[i] == S[j]:
+                memo[i, j] = dp(i + 1, j - 1) + 2
+            else:
+                memo[i, j] = max(dp(i, j - 1), dp(i + 1, j))
+        return memo[i, j]
+    return dp(0, len(S) - 1)
+        \end{minted}
 
     \end{parts}
 
