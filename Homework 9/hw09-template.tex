@@ -71,10 +71,10 @@
     Answer the following questions by filling in the boxes with ``insert", ``delete", ``match"
     or ``substitute" as appropriate:
     \begin{parts}
-        \part[2] If the parent pointer of a cell points to the cell \textit{directly to the left}, then a(n) $\boxed{\text{ANSWER HERE}}$ in Sequence A occurred.
-        \part[2] If the parent pointer of a cell points to the cell \textit{directly above}, then a(n) $\boxed{\text{ANSWER HERE}}$ in Sequence A occurred.
-        \part[2] If the parent pointer of a cell points to the cell \textit{directly diagonal to the top-left}, and the values in the cells within the table are \textit{equal} then a(n) $\boxed{\text{ANSWER HERE}}$ occurred.
-        \part[2] If the parent pointer of a cell points to the cell \textit{directly diagonal to the top-left}, and the values in the cells within the table are \textit{not equal} then a(n) $\boxed{\text{ANSWER HERE}}$ occurred.
+        \part[2] If the parent pointer of a cell points to the cell \textit{directly to the left}, then a(n) $\boxed{\text{insert}}$ in Sequence A occurred.
+        \part[2] If the parent pointer of a cell points to the cell \textit{directly above}, then a(n) $\boxed{\text{delete}}$ in Sequence A occurred.
+        \part[2] If the parent pointer of a cell points to the cell \textit{directly diagonal to the top-left}, and the values in the cells within the table are \textit{equal} then a(n) $\boxed{\text{match}}$ occurred.
+        \part[2] If the parent pointer of a cell points to the cell \textit{directly diagonal to the top-left}, and the values in the cells within the table are \textit{not equal} then a(n) $\boxed{\text{substitute}}$ occurred.
         \part[7] Provide the edit trace for the example above in a format similar to the following:
 
         \begin{tabular}{ccccc} %\hline
@@ -82,6 +82,13 @@
             {\color{red} D} & {\color{green} M} & {\color{green} M} & {\color{green} M} & {\color{red} I} \\ %\hline
             -               & A                 & G                 & O                 & G               \\ % \hline
         \end{tabular}
+
+        \begin{tabular}{ccccccccccccccccccccc} %\hline
+            G               & C               & T                 & A                 & T                 & C                 & A                 & C                 & -               & -               & C                 & T               & G                 & A               & C               & C               & T                 & C                 & C               & A                 & G               \\ % \hline
+            {\color{red} D} & {\color{red} D} & {\color{green} M} & {\color{green} M} & {\color{green} M} & {\color{green} M} & {\color{green} M} & {\color{green} M} & {\color{red} I} & {\color{red} I} & {\color{green} M} & {\color{red} S} & {\color{green} M} & {\color{red} S} & {\color{red} S} & {\color{red} S} & {\color{green} M} & {\color{green} M} & {\color{red} S} & {\color{green} M} & {\color{red} S} \\ %\hline
+            -               & -               & T                 & A                 & T                 & C                 & A                 & C                 & G               & A               & C                 & C               & G                 & C               & G               & G               & T                 & C                 & G               & A                 & T               \\ % \hline
+        \end{tabular}
+
 
     \end{parts}
 
@@ -99,15 +106,87 @@
     \begin{parts}
         \part[10] Provide the optimal break cost for a string of length 20 and split pieces of lengths 3, 7, 6, 4.
 
+        \begin{tikzpicture}
+            % Left rectangle
+            \draw (0,0) rectangle (1.5,1);
+            \node at (0.75,0.5) {3};
+            \draw (1.5,0) rectangle (5,1);
+            \node at (3.25,0.5) {7};
+
+            % Right rectangle
+            \draw (6,0) rectangle (10,1);
+            \node at (8,0.5) {6};
+            \draw (10,0) rectangle (12,1);
+            \node at (11,0.5) {4};
+
+            % Cost
+            \node at (14,0.5) {Cost: 20};
+        \end{tikzpicture}
+
+        \begin{tikzpicture}
+            % Left rectangle
+            \draw (0,0) rectangle (1.5,1);
+            \node at (0.75,0.5) {3};
+            \draw (1.75,0) rectangle (5.25,1);
+            \node at (3.5,0.5) {7};
+
+            % Right rectangle
+            \draw (6,0) rectangle (10,1);
+            \node at (8,0.5) {6};
+            \draw (10,0) rectangle (12,1);
+            \node at (11,0.5) {4};
+
+            % Cost
+            \node at (14,0.5) {Cost: 10};
+        \end{tikzpicture}
+
+        \begin{tikzpicture}
+            % Left rectangle
+            \draw (0,0) rectangle (1.5,1);
+            \node at (0.75,0.5) {3};
+            \draw (1.75,0) rectangle (5.25,1);
+            \node at (3.5,0.5) {7};
+
+            % Right rectangle
+            \draw (5.75,0) rectangle (9.75,1);
+            \node at (7.75,0.5) {6};
+            \draw (10,0) rectangle (12,1);
+            \node at (11,0.5) {4};
+
+            % Cost
+            \node at (14,0.5) {Cost: 10};
+        \end{tikzpicture}
+
+        Total cost: 20 + 10 + 10 = 40
+
         \part[5] What are the inputs to the \textbf{subproblem instance}?
+
+        The inputs to the sub problem instance are the starting index $i$, the ending index $j$, and the length of the string $n$.
 
         \part[5] Which subproblem instances are the \textbf{base cases}? What are their values?
 
+        The base cases are when $i = j$ and the values of the base cases are 0.
+
+
         \part[15] Given your answers to the above questions, develop notation and write a \textit{formula} the \textbf{recurrence relation}.
+
+        Recurrence relation:
+        \begin{align*}
+            \text{cost}(i, j) = \begin{cases}
+                                    0                                                                                                      & \text{if } i = j \\
+                                    \min_{i \leq k < j} \left\{ \text{cost}(i, k) + \text{cost}(k+1, j)  + \sum_{n = i}^{j} l_n   \right\} & \text{otherwise}
+                                \end{cases}
+        \end{align*}
 
         \part[5] How many \textbf{dimensions} will the dynamic programming table (used in bottom-up DP) have? What variables will each dimension of your table correspond to? What is the domain of each dimension?
 
+        There will be two dimensions in the dynamic programming table. The first dimension will correspond to the starting index $i$ and the second dimension will correspond to the ending index $j$. The domain of each dimension will be $1 \leq i \leq n$ and $1 \leq j \leq n$.
+
+
+
         \part[10] What \textbf{iteration order} is required to compute the bottom-up DP table?
+
+        The first step will to set the base cases (diagonal) to 0. Then, the iteration order will be to iterate over the table in a diagonal manner. That is the first iteration will be to compute the values for $i = j$ (base case), then $i = j - 1$, $i = j - 2$, and so on until $i = 1$ and $j = n$.
 
     \end{parts}
 
