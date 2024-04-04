@@ -1,5 +1,6 @@
 import sys
 import random
+import time
 
 
 def timber_recursive(log_sizes):
@@ -7,10 +8,9 @@ def timber_recursive(log_sizes):
     if len(log_sizes) == 1:
         return log_sizes[0]
 
-    total_length = sum(log_sizes)
-
     # Recursive Case
-    return total_length - min(timber_recursive(log_sizes[1:]), timber_recursive(log_sizes[:-1]))
+    return sum(log_sizes) - min(timber_recursive(log_sizes[1:]),
+                                timber_recursive(log_sizes[:-1]))
 
 
 def command_line_input():
@@ -24,9 +24,6 @@ def command_line_input():
     # close the file
     f.close()
 
-    # Get the number of logs from the first line
-    logs = int(lines[0])
-
     # Get the sizes of the logs from the second line
     log_sizes = list(map(int, lines[1].split()))
 
@@ -35,10 +32,26 @@ def command_line_input():
 
 def synthetic_test():
     # Test all log sizes from 1 to 20. Use a random number generator to generate the log sizes
-    for i in range(1, 21):
-        log_sizes = [random.randint(1, 1001) for _ in range(i)]
-        print(i, ":", timber_recursive(log_sizes))
+    # Log files to an output file
+    with open("output.csv", "w") as f:
+        for i in range(1, 21):
+            print("Testing log size: ", i)
+            # test each size 100 times
+            for _ in range(100):
+                log_sizes = [random.randint(1, 1001) for _ in range(i)]
+                # Get the start time of the algorithm
+                start_time = time.time()
+                # Run the algorithm
+                timber_recursive(log_sizes)
+                # Get the end time of the algorithm
+                end_time = time.time()
+                # Calculate the time taken in milliseconds
+                time_taken = (end_time - start_time) * 1000
+                # Write the results to the output file
+                f.write(f"{i}, {timber_recursive(log_sizes)}, {time_taken}\n")
+
+    f.close()
 
 
 if __name__ == "__main__":
-    command_line_input()
+    synthetic_test()
