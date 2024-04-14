@@ -67,11 +67,15 @@
     \begin{parts}
         \part Consider two decision problems $A$ and $B$ where $A$ is known to be NP-Complete, and every instance of $B$ can be reduced to an instance of $A$ in polynomial size and time. $B$ is NP-Complete.
 
-        $\square$ True $\square$ False
+        $\blacksquare$ True $\square$ False
+
+        If $A$ is NP-Complete, and $B$ can be reduced to $A$ in polynomial time, then $B$ is also NP-Complete.
 
         \part If a problem, $X$, is NP-Complete, it is unsolvable
 
-        $\square$ True $\square$ False
+        $\square$ True $\blacksquare$ False
+
+        NP-Complete problems are solvable, but they are not solvable in polynomial time.
 
         \part Let $\propto$ denote a polynomial-time reduction.
         Then, for problems $X$, $Y$ and $Z$,
@@ -80,7 +84,9 @@
         \]
         In other words, the polynomial-time reduction property is transitive
 
-        $\square$ True $\square$ False
+        $\blacksquare$ True $\square$ False
+
+        If $X$ can be reduced to $Y$ in polynomial time, and $Y$ can be reduced to $Z$ in polynomial time, then $X$ can be reduced to $Z$ in polynomial time.
 
     \end{parts}
     \clearpage
@@ -97,24 +103,24 @@
     \]
 
     \begin{parts}
-        \part $x_1$: $\square$ True $\square$ False
-        \part $x_2$: $\square$ True $\square$ False
-        \part $x_3$: $\square$ True $\square$ False
-        \part $x_4$: $\square$ True $\square$ False
-        \part $x_5$: $\square$ True $\square$ False
+        \part $x_1$: $\square$ True $\blacksquare$ False
+        \part $x_2$: $\square$ True $\blacksquare$ False
+        \part $x_3$: $\blacksquare$ True $\square$ False
+        \part $x_4$: $\square$ True $\blacksquare$ False
+        \part $x_5$: $\square$ True $\blacksquare$ False
     \end{parts}
     \clearpage
 
     \question[10] [W12, \stars{3}] Vertex Cover. Indicate which vertices are needed in the optimal vertex cover for the following graph.
 
     \begin{tikzpicture}
-        \node[circle, draw] (1) at (0,0) {1};
-        \node[circle, draw] (2) at (2,2) {2};
+        \node[circle, draw, fill=gray] (1) at (0,0) {1};
+        \node[circle, draw, fill=gray] (2) at (2,2) {2};
         \node[circle, draw] (3) at (0,2) {3};
-        \node[circle, draw] (4) at (2,0) {4};
+        \node[circle, draw, fill=gray] (4) at (2,0) {4};
         \node[circle, draw] (5) at (3,1) {5};
         \node[circle, draw] (6) at (1,1) {6};
-        \node[circle, draw] (7) at (4,2) {7};
+        \node[circle, draw, fill=gray] (7) at (4,2) {7};
         \node[circle, draw] (8) at (4,0) {8};
 
         \draw (1) -- (3);
@@ -130,14 +136,15 @@
     \end{tikzpicture}
 
     \begin{parts}
-        \part 1: $\square$ Included
-        \part 2: $\square$ Included
+        \part 1: $\blacksquare$ Included
+        \part 2: $\blacksquare$ Included
         \part 3: $\square$ Included
-        \part 4: $\square$ Included
+        \part 4: $\blacksquare$ Included
         \part 5: $\square$ Included
         \part 6: $\square$ Included
-        \part 7: $\square$ Included
+        \part 7: $\blacksquare$ Included
     \end{parts}
+
     \clearpage
 
     \question[10] [W12, \stars{1}] Satisfiability. Bill has an $n$-SAT problem with 10 clauses that he wishes to reduce to 3-SAT. His instance has:
@@ -152,13 +159,28 @@
     \begin{parts}
         \part[5] Using the reduction discussed in class, how many clauses will Bill end up with?
 
-        $\boxed{\text{ANSWER HERE}}$
+        $\boxed{\text{12}}$
 
         \part[5] Assuming Bill doesn't reuse dummy variables, how many dummy variables will Bill add?
 
-        $\boxed{\text{ANSWER HERE}}$
+        $\boxed{\text{6}}$
 
     \end{parts}
+
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c}
+            \# of literals, k & \# of clauses & new dummy var    & \# 3-literal clause \\
+            \hline
+            1                 & 1             & 2                & 4                   \\
+            2                 & 2             & $1 \times 2 = 2$ & $2 \times 2 = 4 $   \\
+            4                 & 3             & 0                & 1                   \\
+            5                 & 4             & $(5-3) = 2   $   & $ (5-2) = 3 $       \\ \hline
+            total             & 10            & 6                & 12
+        \end{tabular}
+    \end{table}
+
 
     % close the document
 \end{questions}
